@@ -19,8 +19,8 @@ Routing Protocol for Low Power and Lossy Networks (AODV-RPL)}
 \IEEEauthorblockA{ECE Department, Indian Institute of Science \\ \{lavanyahm,
 anandsvr, malati\}@iisc.ac.in} }
 
-\begin{document} 
-\maketitle 
+\begin{document}
+\maketitle
 \begin{abstract}
 
 Reactive route discovery for Point-to-Point (P2P) traffic flows is crucial in
@@ -61,7 +61,7 @@ through compression and fragmentation. The design of a robust routing protocol
 plays a pivotal role to enhance the performance of the memory and power
 constrained nodes in a dynamically changing network \cite{lowpan}. To achieve
 this, IETF proposed a proactive based IPv6 distance vector routing protocol for
-Low-power and Lossy Networks, named RPL \cite{RFC6550}. 
+Low-power and Lossy Networks, named RPL \cite{RFC6550}.
 
 The RPL is primarily designed to build and maintain loop-free routing paths over
 mutli-hop networks to cater to the requirements of many IoT real-world
@@ -107,12 +107,12 @@ AODV-RPL instance called RREQ-instance, by multi-casting DIO with the RREQ
 message.  The destination node in turn multi-casts or uni-casts a response
 message, called the RREP message. The RREP message establishes a path from the
 source to destination node, and RREQ message establishes a path from
-destination to source.  
+destination to source.
 
 This paper comprehensively evaluates the performance of RPL and AODV-RPL in a
 dense network of constrained nodes. An extensive set of experiments were
 conducted, having considered both symmetric and asymmetric links between
-multiple node-pairs in the network. 
+multiple node-pairs in the network.
 
 The rest of the paper is organized as follows. Section \ref{Section II} briefly
 explains about the pros and cons of traditional RPL and P2P-RPL routing
@@ -129,7 +129,7 @@ Directed Acyclic Graph (DODAG) \cite{RFC6550}. With RPL protocol, the data
 packets have to either traverse the root in non-storing mode, or need to
 traverse a common ancestor in storing mode. RPL may suffer severe traffic
 congestion near the DAG root \cite{RFC6997,RFC6998} and routes may be
-sub-optimal. 
+sub-optimal.
 
 To discover optimal paths for P2P traffic flows in RPL protocol, a
 reactive based P2P-RPL \cite{RFC6997} protocol is proposed which specifies a
@@ -149,17 +149,17 @@ which the DAG root (DODAGID) is common for two Instances. With this,
 application-specific routing requirements for bidirectional asymmetric links in
 base RPL can be satisfied. %But, P2P-RPL for Paired DODAGs require two DAG roots
 %namely one for the SourceNode and another for the TargetNode due to temporary
-%DODAG formation. 
+%DODAG formation.
 For bi-directional asymmetric links in constrained networks,
 AODV-RPL specifies P2P route discovery, utilizing  RPL with a new Mode of
 Operation (MoP).  For asymmetrical links, AODV-RPL has two multicast messages,
 one from SourceNode to TargetNode and another from TargetNode to SourceNode.
 With AODV-RPL,need of address vector is completely eliminated for symmetrical
 links which can significantly reduce the control packet size that is important
-for constrained LLN networks. 
+for constrained LLN networks.
 
 This paper compare RPL with AODV-RPL for both symmetric and asymmetric
-links with PDR, delay and number of hops using LLNs border router.	 	 
+links with PDR, delay and number of hops using LLNs border router.
 
 \section{Overview of AODV-RPL}\label{Section.III} In AODV-RPL, reactive
 route discovery is initiated by creating a temporary DAG rooted at the
@@ -172,18 +172,18 @@ messages from TargetNode to OrigNode. Intermediate routers in LLN changes join
 the Paired DODAGs based on the rank as calculated from the DIO message.
 
 An LLN node originating the AODV-RPL message supplies the following
-information in the DIO header: 
+information in the DIO header:
 \begin{itemize}
 
 \item ’S’ bit       : Symmetric bit added in the traditional
-DIO object.  
+DIO object.
 \item MOP           : Mode of Operation in the DIO object MUST be set to ”5”
 for AODV-RPL DIO	message.
 \item RPLInstanceID : Instance-ID of paired DODAGs of AODV-RPL Instance.
 \item DODAGID       : IPv6 address of the device that initiates the AODV RREQ-Instance
 \item Rank          : Node rank corresponding  to AODV-RPL Instance.
-\end{itemize} 
- 
+\end{itemize}
+
 
 The ’S’ bit in DIO base object is set to '1' mean that the route from
 SourceNode to TargetNode is symmetric. When the RREQ-Instance arrives over an
@@ -212,7 +212,7 @@ academic community. Contiki was chosen because it includes an IPv6 stack with
 basis for  AODV-RPL implementation and simulations can be also be conducted
 using Cooja simulator.
 
-\subsection{Experiments} 
+\subsection{Experiments}
 The experiments consisted 16 node and 38 node networks as shown in figures
 \ref{fig:topology_1} and \ref{fig:Topology_2}. Node-1 is assumed to be a LLN
 border where LLN traffic is re-routed through traditional wired backbone
@@ -224,7 +224,7 @@ tabulated in table \ref{tab1:simsetup}
 \begin{table}[h!]
 \centering
 \begin{tabular}{llllllll}
-\toprule 
+\toprule
 \midrule Platform & MSP430 based motes \\ MAC & CSMA  \\ Network stack
 & IPv6/6LoWPAN \\ Radio duty cycle (RDC) & null RDC \\  Application & UDP
 server/ UDP client\\  Application data length & 40 Bytes \\ Application data
@@ -245,7 +245,7 @@ routes and the DAO mechanism in non-storing mode in order to provide paths from
 SourceNode to TargetNode as described in Section II. The number of hops taken
 to reach TargetNode,delay experienced and PDR achieved were recorded.  Such
 experiments were repeated for different  SourceNode and TargetNode pairs with
-varying link characteristics. 
+varying link characteristics.
 
 \begin{figure}[h!]
 \includegraphics[width=0.5\textwidth]{./topology_1}
@@ -270,19 +270,19 @@ performance of both the protocols below
 
 %\subsubsection{AODV-RPL performance }
 
-\begin{table}[h!] 
-\centering 
-\begin{tabular}{lllllll} 
-\toprule 
+\begin{table}[h!]
+\centering
+\begin{tabular}{lllllll}
+\toprule
 \emph{Number of hops } & \emph{Percentage }  & \emph{ Percentage }\\
 \emph{used} & \emph{of AODV-RPL routes} & \emph{of RPL routes}\\
 \midrule 2 &  5\% & -\\ 3 & 25\% & 7\% & \\ 4 & 40\% & 30\% & \\ 5 & 15 & 13\%& \\6 & 15\% & 38\% &\\7 &-&10\%\\
-\bottomrule \\ 
+\bottomrule \\
 \end{tabular}
-\caption{Number of hops used by percentage of route by RPL and AODV-RPL} \label{tab:hops-usage} 
+\caption{Number of hops used by percentage of route by RPL and AODV-RPL} \label{tab:hops-usage}
 \end{table}
 
-It can be inferred from the table \ref{tab:hops-usage} that on an average, AODV-RPL 
+It can be inferred from the table \ref{tab:hops-usage} that on an average, AODV-RPL
 takes far less number of hops than RPL. About 40\% of AODV-RPL routes use 4 hops,
 whereas, about 38\% of routes in RPL use 6 hops.
 
@@ -306,7 +306,7 @@ x-axis. We observed from figure \ref{fig:delay}, that 45\% of packets in
 AODV-RPL experience (40-50)ms delay and 29\% of the packets experienced
 (52-60)ms delay. Whereas in RPL, 37\% of packets experienced delay between
 (55-65)ms and 25\% of packets experienced delay between (70-80) ms. Therefore,
-we can deduce from the data that AODV-RPL takes less delay compared to RPL. 
+we can deduce from the data that AODV-RPL takes less delay compared to RPL.
 
 One of the reasons for the increased delay in RPL is due to the fact that the
 packet must travel all the way to a common ancestor, or sometimes to the DODAG
@@ -314,7 +314,7 @@ root itself. However, AODV-RPL on the other hand finds the shortest path
 on-demand. As the number of hops increase, the cumulative delay due to
 re-transmissions between every node-pair also increase. We can also observe that
 PDR is less in RPL compared to AODV-RPL, as packets are lost due to congestion
-at border-router. 
+at border-router.
 
 Experimental results of a single SourceNode and TargetNode pair has been
 considered below. The histograms shown in figure \ref{fig:delayS10D13-1} and
@@ -322,7 +322,7 @@ figure \ref{fig:delayS13D10_1} demonstrate the delay experienced when
 SourceNode with ID 13 sent packets to TargetNode with ID 10 and subsequent
 reply from Node-ID 10 to Node-ID 13 respectively. It can be observed that the
 reply packets take a different path than the sender packet. This is due to the
-asymmetric nature of the links. 
+asymmetric nature of the links.
 
 \begin{figure}[h!] \includegraphics[width=0.5\textwidth]{./delayS13D10_1}
 \caption{Packet delay: SourceNode 13 and TargetNode  10}
@@ -341,7 +341,7 @@ better path. This causes a change in the parent and subsequently, a change in
 the path, and leads to packet loss. However, in AODV-RPL a direct path between
 the node-pairs will be established and the same path is retained throughout the
 instance. The change in delay due to symmetric and asymmetric links for the
-same node-pairs has also been observed. 
+same node-pairs has also been observed.
 
 We also noted that the time between originating the route request and receiving
 the route reply was measured to be 550 milliseconds on average, as trickle
@@ -352,7 +352,7 @@ target node 7 is to \verb|30->25->22->17->12->13->10->1->2->7| and reply packet
 from node 7 to node 30 is \verb| 7->2->1->10>13->17->21->30|, ie  in case of
 links being asymmetric, request and  packets take different routes and number
 of hops are also different. In case of AODV-RPL, the path taken for request
-packet is \verb|30->21->16->7|  and relay packet takes\verb|7->16->21->30|. 
+packet is \verb|30->21->16->7|  and relay packet takes\verb|7->16->21->30|.
 
 \begin{figure}[h!]
 \includegraphics[width=0.5\textwidth]{./brused}
@@ -364,23 +364,23 @@ percentage of routes pass through RPL-Border-router in case of AODV-RPL is
 significantly minimum RPL, which reduces congestion at  RPL-Border-router.
 
 
-\begin{table}[h!] 
-\centering 
-\begin{tabular}{lllllll} 
-\toprule 
+\begin{table}[h!]
+\centering
+\begin{tabular}{lllllll}
+\toprule
 \emph{Hop difference } & \emph{Percentage }  \\
 \emph{ } & \emph{of routes experienced} \\
 \midrule less than 2 &  42\% & \\ 2 or more & 58\%  \\
-\bottomrule \\ 
+\bottomrule \\
 \end{tabular}
-\caption{Number of hops used by percentage of route by RPL and AODV-RPL} \label{tab:hops-difd} 
+\caption{Number of hops used by percentage of route by RPL and AODV-RPL} \label{tab:hops-difd}
 \end{table}
 
 
 We can observe from  graph \ref{tab:hops-difd} that, 42\% the AODV-RPL and RPL routes  experience route length difference of  0 or 1 hops. Investigation provides the information that if the shortest hop distance between the node pairs is more,then even AODV-RPL can take route length as equal to RPL route length.
 Consider for example in figure \ref{fig:topology_1} node pairs (10-16)
 experience 6 as shortest hop length, which is route length for both AODV-RPL
-and RPL. The route taken by RPL is (10-5-2-1-4-9-16) and for AODV-RPL is(10-11-12-13-14-15-16), and in topology \ref{fig:Topology_2} between node pair (35-33) AODV-RPL uses (35-36-32-37-33)  and RPL uses (35-36-1-37-33),  even though RPL uses border router, when network is not dense it   
+and RPL. The route taken by RPL is (10-5-2-1-4-9-16) and for AODV-RPL is(10-11-12-13-14-15-16), and in topology \ref{fig:Topology_2} between node pair (35-33) AODV-RPL uses (35-36-32-37-33)  and RPL uses (35-36-1-37-33),  even though RPL uses border router, when network is not dense it
 And also when TargetNode is one of its parent towards
 DODAG root, then route length difference RPL and AODV-RPL are less than 2 hops.
 These situations AODV-RPL can be avoided,so that can reduce AODV-RPL control
@@ -396,7 +396,7 @@ the procedure for subsequent DIO is not addressed. The life time of the
 ADOV-RPL established routes are also not specified.
 
 
-\section{Conclusion} \label{Section.V} 
+\section{Conclusion} \label{Section.V}
 
 Through extensive simulatons on Cooja simulator we evaluated the performance of
 AODV-RPL, a P2P routing protocol draft standard that is adopted by IETF's roll
@@ -411,15 +411,15 @@ conclude that P2P flows between certain node pairs can reuse the routes already
 made available by traditional RPL instead of triggering reactive AODV-RPL
 routing mechanism with the associated routing protocol overhead, if the relative
 benefits offered by AODV-RPL is not significant. A simple hybrid routing
-strategy that uses combination of traditional RPL and AODV-RPL routes is 
-proposed in the paper. 
+strategy that uses combination of traditional RPL and AODV-RPL routes is
+proposed in the paper.
 
 \section{Acknowledgement}
 
 This work was supported  by the Ministry of Electronics and Information
 Technology (MeitY),India. We thank the authors of AODV-RPL draft for their
-inputs in implementation 
+inputs in implementation
 
-\bibliographystyle{unsrt} 
+\bibliographystyle{unsrt}
 \bibliography{references}
 \end{document}
