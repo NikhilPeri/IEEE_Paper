@@ -15,7 +15,7 @@
 \title{ Use of Model Predictive Control (MPC) for Rocket Altitude Correction }
 
 \author{ \IEEEauthorblockN{Nikhil Peri, Anthony Lin, Manit Ginoya, Paul Buzuloiu } \
-\IEEEauthorblockA{ECE Department, Indian Institute of Science \\ \{nperi104, alin102
+\IEEEauthorblockA{uOttawa Rocketry Team \\ \{nperi104, alin102
 mgino015, pbuzu025\}@uottawa.ca} }
 
 \begin{document}
@@ -38,6 +38,33 @@ a kenetic
 \section{Airbrake Model}
 
 \section{Model Predictive Control}
+
+The complexity of rocket flight partially arises from the numerous states
+required to fully define an entire set of dynamics. These states include
+acceleration, velocity, position, orientation, angular speed and angular
+acceleration of the rocket in all three spatial dimensions. Additionally,
+the states related to the actuators (in this case, the servo motor controlling
+the airbrakes) must also be considered. Desiging a classical controller or even
+a digitally implmented classicial controller would bring along several
+inconveniences; for this reason, a model predictive controller was considered
+and implemented.
+
+The major concept of model predictive control is to maintain a real time
+simulation; This simulation's role is to produce a prediction of future system
+states using feedback from sensors and the system's current states. For the case
+of achiving a particular target altitude by deploying airbrakes, the MPC will
+produce a predicted final altitude every control loop. Using this predicted
+final altitude, the error between the predicted final altitude and the desired
+final altitude will be calculated. The final part of the MPC process is to map
+the calculated error to a specific (whether heuristic or deterministic) control
+signal that will be sent to the airbrake actuator.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{./MPC_diagram}
+\caption{Overall Control Diagram of airbrake system}
+\label{fig:MPC_diagram}
+\end{figure}
 
 \section{Imeplementation}
 
