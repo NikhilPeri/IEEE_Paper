@@ -30,12 +30,66 @@ rocket control systems have to be extremely responsive and precise. Classical
 control systems based on observed sensor feedback would not be able to meet the
 demands of rocket flight since the latency between plant actuation affecting the
 the physical world and detecting that change through sensor observations is too
-slow for such dynamic flight enviroments. Model Predictive Control (MPC) solves
-these problems by introducing state estimation.  This process involves maintianing
-a kenetic
+slow for such dynamic flight environments. Model Predictive Control (MPC) solves
+these problems by introducing state estimation.  This process involves maintaining
+a kinetic model of the actuators we are using for altitude control, in this case
+is a drag model for a drag inducing airbrake system. Using this model we can predict
+the effect of actuation on the target altitude. #TODO finish this with the speficic MPC schema that we are using
+
+\section{System States}
+In both classical and MPC design it is important to first outline all the system states.
+For most kinetic systems these are the acceleration, velocity and position of the object
+being controlled for each axis x, y, z in the state space representation below
+
+\begin{equation}
+\begin{bmatrix}\dot{p_x}\\\dot{v_x}\\\dot{a_x}\end{bmatrix}=
+\begin{bmatrix}\0 \ 1\ 0\\0 \ 0\ 1\\0\0\0\end{bmatrix}
+\begin{bmatrix}p_x\\v_x\\a_x\end{bmatrix}
+\end{equation}
+
+These vectors need to be projected on a single reference frame, and for the purposes of calculating
+rocket trajectory after lift-off and maximum altitude above the ground it makes the most sense to
+use the earth as a reference frame.
+
+We also have the additional rotation around each of the specified axis commonoly refered to as
+pitch roll and yaw
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{./airbrake_mechanism}
+\caption{Airbrake Mechanism}
+\label{fig:airbrake_mechanism}
+\end{figure}
+
+For simplicity we can omit the roll since it does not contribute to the heading of the rocket in flight
 
 \section{Airbrake Model}
+The Airbrake is our primary control surface, it is actuated by a servo that deploys
+set of fins out of streamlined rocket body.  These can be used to increase the drag on
+the rocket body as a result reducing the velocity and final altitude of the rocket.
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{./airbrake_mechanism}
+\caption{Airbrake Mechanism}
+\label{fig:airbrake_mechanism}
+\end{figure}
+
+The drag force is a function of the surface area and relative velocity as seen below
+
+\begin{equation}
+  F_{drag}(V, A)=\frac{1}{2}C_dV^2A\rho
+\end{equation}
+
+In order to characterize this system we must determine the drag coefficient of the rocket
+during airbrake deployment.  Due to the similicity of the Airbrake we can use a basic
+model for the experimentally determined drag of a flat plate which is \ref(nasa)
+
+\begin{equation}
+  C_d=1.28
+\end{equation}
+
+But since this drag model will be used to predict final state
 \section{Model Predictive Control}
 
 The complexity of rocket flight partially arises from the numerous states
