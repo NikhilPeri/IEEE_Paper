@@ -34,7 +34,6 @@ slow for such dynamic flight enviroments. Model Predictive Control (MPC) solves
 these problems by introducing state estimation.  This process involves maintianing
 a kenetic
 
-
 \section{Airbrake Model}
 
 \section{Model Predictive Control}
@@ -53,11 +52,19 @@ The major concept of model predictive control is to maintain a real time
 simulation; This simulation's role is to produce a prediction of future system
 states using feedback from sensors and the system's current states. For the case
 of achiving a particular target altitude by deploying airbrakes, the MPC will
-produce a predicted final altitude every control loop. Using this predicted
-final altitude, the error between the predicted final altitude and the desired
-final altitude will be calculated. The final part of the MPC process is to map
-the calculated error to a specific (whether heuristic or deterministic) control
-signal that will be sent to the airbrake actuator.
+produce a predicted final altitude
+every control loop. Using this predicted final altitude, the error between the
+predicted final altitude and the desired final altitude will be calculated. The
+final part of the MPC process is to map the calculated error to a specific
+(whether heuristic or deterministic) control signal that will be sent to the
+airbrake actuator.
+
+Figure \ref{fig:MPC_diagram} is the fully defined control system diagram
+corresponding to the description provided above. Running through the control
+schema yeilds the following sequence of events: sensors are read, filtered and
+fused, states are estimated, trajectory is predicted, final altitude error is
+determined, control signal is generated, signal is sent to actuator driver,
+actuation occurs which affects rocket flight.
 
 \begin{figure}[H]
 \centering
@@ -65,6 +72,13 @@ signal that will be sent to the airbrake actuator.
 \caption{Overall Control Diagram of airbrake system}
 \label{fig:MPC_diagram}
 \end{figure}
+
+When comparing figure \ref{fig:MPC_diagram} to a
+typical control systems diagram, the input to the system seems to be missing;
+This input (the desired final altitude) is merely hidden away as a part of the
+digitally implemented configuration values. Some important inferences of the
+presented control diagram include understanding that the configuration values
+include all phycial rocket parameters, as well as the desired final altitude.
 
 \section{Imeplementation}
 
