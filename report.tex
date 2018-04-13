@@ -51,17 +51,33 @@ These vectors need to be projected on a single reference frame, and for the purp
 rocket trajectory after lift-off and maximum altitude above the ground it makes the most sense to
 use the earth as a reference frame.
 
-We also have the additional rotation around each of the specified axis commonoly refered to as
+We also have the additional rotation around each of the specified axis commonly referred to as
 pitch roll and yaw
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.45\textwidth]{./airbrake_mechanism}
-\caption{Airbrake Mechanism}
-\label{fig:airbrake_mechanism}
+\includegraphics[width=0.45\textwidth]{./pitch_roll_yaw}
+\caption{Rocket Axis of Rotation}
+\label{fig:pitch_roll_yaw}
 \end{figure}
 
-For simplicity we can omit the roll since it does not contribute to the heading of the rocket in flight
+For simplicity we can omit the roll since it does not contribute to the heading of the rocket in flight.
+We can then apply the following reference frame transformation to convert the acceleration experienced
+by the rocket to the acceleration it is experiencing with reference to the earth frame using the Euclidian Matrix
+\ref(mallick_2016)
+
+\begin{equation}
+  \begin{bmatrix}\ a_x\\\ a_y\\\ a_z\end{bmatrix}=
+  \begin{bmatrix}
+    cos(\theta_x) & sin(\theta_x)sin(\theta_y) & sin(\theta_x)cos(\theta_y) \\
+    0 & cos(\theta_y) & -sin(\theta_y) \\
+    sin(\theta_y) & cos(\theta_x)sin(\theta_y) & cos(\theta_x)cos(\theta_y) \\
+  \end{bmatrix}
+  \begin{bmatrix} a'_x \\ a'_y \\ a'_z \end{bmatrix}
+\end{equation}
+
+Where \theta_x is the yaw and \theta_y is the pitch of the rocket. These form the state space for our rocket
+system and most 3D kinetic systems
 
 \section{Airbrake Model}
 The Airbrake is our primary control surface, it is actuated by a servo that deploys
