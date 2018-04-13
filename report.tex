@@ -43,7 +43,7 @@ being controlled for each axis x, y, z in the state space representation below
 
 \begin{equation}
 \begin{bmatrix}\dot{p_x}\\\dot{v_x}\\\dot{a_x}\end{bmatrix}=
-\begin{bmatrix}\0 \ 1\ 0\\0 \ 0\ 1\\0\0\0\end{bmatrix}
+\begin{bmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix}
 \begin{bmatrix}p_x\\v_x\\a_x\end{bmatrix}
 \end{equation}
 
@@ -56,7 +56,7 @@ pitch roll and yaw
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.30]{./pitch_roll_yaw}
+\includegraphics[scale=0.50]{./pitch_roll_yaw}
 \caption{Rocket Axis of Rotation}
 \label{fig:pitch_roll_yaw}
 \end{figure}
@@ -76,7 +76,7 @@ by the rocket to the acceleration it is experiencing with reference to the earth
   \begin{bmatrix} a'_x \\ a'_y \\ a'_z \end{bmatrix}
 \end{equation}
 
-Where \theta_x is the yaw and \theta_y is the pitch of the rocket. These form the state space for our rocket
+Where $\theta_x$ is the yaw and $\theta_y$ is the pitch of the rocket. These form the state space for our rocket
 system and most 3D kinetic systems
 
 \section{Airbrake Model}
