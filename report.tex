@@ -177,8 +177,10 @@ perform self-checking.
 
 The state estimation block uses the feedback values from sensors (after filtering and fusion)
 and the previous states of the system to calculate the current state of the system.
-Since the sensors are able to provide all values necessary to satisfy the kinematic
-equations of motion, these equations are used for state estimation.
+Since the feedback values already provide measured acceleration, speed and position
+in a non-inertial frame, they can be used directly to update the states of the system.
+However, 
+
 
 \subsection{Final Altitude Prediction}
 
