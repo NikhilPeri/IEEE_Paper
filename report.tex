@@ -145,7 +145,40 @@ system.
 
 \subsection{Sensor Fusion}
 
+In order to achieve accurate state estimation, which is an essential functional
+component of the control schema, certain feedback values are required in a
+non-inertial frame. However the sensors on board the rocket can only measure
+quantities in an inertial frame. Therefore, the sensor fusion block is necessary
+to not only filter sensor values but also to acquire accurate feedback values in
+a non-inertial frame.
+
+To determine what types of filtering and fusion are required, it is helpful to
+first determine a set of sensors that will be used. Figure \ref{fig:sensors}
+dipicts the three main modules of sensors being used. They are, shown left to right,
+Yost Labs 3 space LX Embedded IMU, Adafruit MTK3339 GPS and the MPL3115A2 altimeter.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{./sensors}
+\caption{Image of Sensors Used for System Implementation}
+\label{fig:sensors}
+\end{figure}
+
+These sensors were chosen to help minimize the amount of self developed fusion and
+filtering. The Yost Labs 3 space LX Embedded IMU has nine degrees of freedom and
+provides filtered, three dimensional acceleration, speed and position in a
+non-inertial frame (via proprietary, low level embedded algorithms). Using the data
+from this sensor module, all required feedback values for state estimation can be
+satisfied. However to make the state estimation as accurate as possible, the
+stand alone GPS and altimeter modules will be used to correct IMU drift and
+perform self-checking.
+
 \subsection{State Estimation}
+
+The state estimation block uses the feedback values from sensors (after filtering and fusion)
+and the previous states of the system to calculate the current state of the system.
+Since the sensors are able to provide all values necessary to satisfy the kinematic
+equations of motion, these equations are used for state estimation.
 
 \subsection{Final Altitude Prediction}
 
