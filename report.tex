@@ -12,37 +12,46 @@
 
 \renewcommand{\thetable}{\Roman {table}}
 
-\title{ Use of Model Predictive Control (MPC) for Rocket Altitude Correction }
+\title{Simple Model Predictive Control (MPC) for Sounding Rocket Altitude Correction via Airbrakes}
 
-\author{ \IEEEauthorblockN{Nikhil Peri, Anthony Lin, Manit Ginoya, Paul Buzuloiu } \
+\author{ \IEEEauthorblockN{Nikhil Peri, Anthony Lin, Manit Ginoya, Paul Buzuloiu} \
 \IEEEauthorblockA{uOttawa Rocketry Team \\ \{nperi104, alin102
 mgino015, pbuzu025\}@uottawa.ca} }
 
 \begin{document}
 \maketitle
 \begin{abstract}
+A simple model predictive control (MPC) schema is described for the appropriate
+actuation of custom airbrakes on a sounding rocket for the purposes of achieving
+precise final altitude (apogee). The drag characterization of the airbrakes are
+briefly mentioned. The overall control systems diagram is presented. The
+convenience and flexibility of the MPC schema for a sounding rocket airbrake
+system are implicitely given.
 \end{abstract}
+\vspace{5mm}
+Keywords: Model Predictive Control, Aerospace.
 
-Keywords—Model Predictive Control, Aerospace.  \section{Introduction}
-
+\section{Introduction}
 Rockets unlike other aircraft have high speed and dynamic flights, as a result
 rocket control systems have to be extremely responsive and precise. Classical
 control systems based on observed sensor feedback would not be able to meet the
 demands of rocket flight since the latency between plant actuation affecting the
 the physical world and detecting that change through sensor observations is too
 slow for such dynamic flight environments. Model Predictive Control (MPC) solves
-these problems by introducing state estimation.  This process involves maintaining
-a kinetic model of the actuators we are using for altitude control, in this case
-is a drag model for a drag inducing airbrake system. Using this model we can predict
-the effect of actuation on the target altitude.
+these problems by introducing a real time simulation that predicts trajectory.
+This process involves maintaining a kinetic model of rocket flight and a
+dynamics model of the control surfaces we are using for altitude control.
+For the case presented, it is a drag model for a airbrake system.
+Using this model we can predict the effect of actuation on the target altitude
+via the kinematic model of rocket flight.
 
 \section{System States}
 In both classical and MPC design it is important to first outline all the system states.
 For most kinetic systems these are the acceleration, velocity and position of the object
 being controlled for each axis x, y, z in the state space representation below
 
-\begin{equation}  \label(eq:1)
-\begin{bmatrix}\dot{p_x}\\\dot{v_x}\\\dot{a_x}\end{bmatrix}=
+\begin{equation}\label{eq:1}
+\begin{bmatrix}\dot{p_x} \\ \dot{v_x} \\ \dot{a_x} \end{bmatrix} =
 \begin{bmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix}
 \begin{bmatrix}p_x\\v_x\\a_x\end{bmatrix}
 \end{equation}
@@ -65,8 +74,13 @@ For simplicity we can omit the roll since it does not contribute to the heading 
 We can then apply the following reference frame transformation to convert the acceleration experienced
 by the rocket to the acceleration it is experiencing with reference to the earth frame using the Euclidian Matrix
 \cite{mallick_2016}
-\begin{equation}  \label(eq:2)
-  \begin{bmatrix}\ a_x\\\ a_y\\\ a_z\end{bmatrix}=
+\vspace{5mm}
+
+\begin{equation}\label{eq:2}
+  \begin{bmatrix}a_x \\ a_y \\ a_z
+  \end{bmatrix} =
+
+  \vspace{5mm}
   \begin{bmatrix}
     cos(\theta_x) & sin(\theta_x)sin(\theta_y) & sin(\theta_x)cos(\theta_y) \\
     0 & cos(\theta_y) & -sin(\theta_y) \\
@@ -75,11 +89,11 @@ by the rocket to the acceleration it is experiencing with reference to the earth
   \begin{bmatrix} a'_x \\ a'_y \\ a'_z \end{bmatrix}
 \end{equation}
 
-Where $$\theta_x$$ is the yaw and $$\theta_y$$ is the pitch of the rocket and a' is the acceleration of the rocket.
+Where $\theta_x$ is the yaw and $\theta_y$ is the pitch of the rocket and a' is the acceleration of the rocket
 from the rockets reference frame. These form the state space for our rocket system and most 3D kinetic systems
 
 \section{Airbrake Model}
-The Airbrake is our primary control surface, it is actuated by a servo that deploys
+The airbrake is our primary control surface, it is actuated by a servo that deploys
 set of fins out of streamlined rocket body.  These can be used to increase the drag on
 the rocket body as a result reducing the velocity and final altitude of the rocket.
 
@@ -92,22 +106,22 @@ the rocket body as a result reducing the velocity and final altitude of the rock
 
 The drag force is a function of the surface area and rocket relative velocity as seen below
 
-\begin{equation}  \label(eq:3)
-  F_{drag}(v', A)=\frac{1}{2}C_dv'^2A\rho
+\begin{equation}\label{eq:3}
+  F_{drag}(v', A)=\frac{1}{2}C_dv'^2A\rho_{air}
 \end{equation}
 
 In order to characterize this system we must determine the drag coefficient of the rocket
-during airbrake deployment.  Due to the simplicity of the Airbrake we can use a basic
+during airbrake deployment. Due to the simplicity of the airbrake we can use a basic
 model for the experimentally determined drag of a flat plate\cite{nasa} which is
 
-\begin{equation}
+\begin{equation}\label{eq:4}
   C_d=1.28
 \end{equation}
 
 But since this drag model will be used to predict the future state of the system, it is
 imperative that this model is as representative of the physical world as possible.  Using
-a simplistic model is a good starting point, but using Computational Fluid Dynamics (CFD)
-simulations or wind tunnel testing.
+a simplistic model is a valid starting point, but using Computational Fluid Dynamics (CFD)
+simulations or wind tunnel testing is a recommended continuation argument.
 
 \section{Model Predictive Control}
 
@@ -198,14 +212,13 @@ The state estimation block uses the feedback values from sensors (after filterin
 and the previous states of the system to calculate the current state of the system.
 Since the feedback values already provide measured acceleration, speed and position
 in a non-inertial frame, they can be used directly to update the states of the system.
-However,
 
 \subsection{Final Altitude Prediction}
 
-Recall that equation \ref(eq:3) allows us to model the drag of the rocket given current velocity and
-Airbrake area. Notice that this is a controllable value based on the airbrake actuation area.  The second
+Recall that equation \ref{eq:3} allows us to model the drag of the rocket given current velocity and
+airbrake area. Notice that this is a controllable value based on the airbrake actuation area.  The second
 variable is the velocity of the rocket through the relative airflow, this we require us to apply the
-inverse of the Euclidian Angle matrix from equation \ref(eq:2) to transform the velocity reference frame
+inverse of the Euclidian Angle matrix from equation \ref{eq:2} to transform the velocity reference frame
 back to that of the rocket (ie. v')
 
 From here we can compute the drag force and apply a ballistic model of rocketry flight that tells us
@@ -213,21 +226,20 @@ the maximum altitude of the rocket given its current state and current drag forc
 we must first find the time at which the vertical velocity $v_{z}$ is zero, by solving the integration of velocity
 we can get the predicted distance to this point, and as a result the max altitude
 
-\begin{equation} \label{eq:4}
-\begin{gather*}
-  y_{z to max} = \frac{m_{rocket}v'_z}{2F_{drag}(v'_z, A)}*ln(\frac{m_{rocket}g+F_{drag}(v'_z, A)v_z^2}{m_{rocket}g}) \\
-  y_{z max} = y_z + y_{z to max}
-\end{gather*}
+\begin{equation} \label{eq:5}
+\end{equation}
+
+\begin{equation} \label{eq:6}
 \end{equation}
 
 We can use this expression to determine the affect of our air brake deployment on the maximum altitude.
 
 \subsection{Final Altitude Error Calculation}
 
-Using the altitude prediction determined above in equation \ref{eq:4} we can compute an error function given by
+Using the altitude prediction determined above in equation \ref{eq:4} The error between predicted and desired final altitudes can be computed by:
 
-\begin{equation} \label{eq:4}
-  error =  target - y_{z max}
+\begin{equation} \label{eq:5}
+  error =  y_{z\_target} - y_{z\_max}
 \end{equation}
 
 
