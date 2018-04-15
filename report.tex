@@ -5,12 +5,9 @@
 
 \usepackage[pass]{geometry} \usepackage{tabularx} \usepackage{graphicx}
 \usepackage{amssymb} \usepackage{algorithm} \usepackage{algorithmic}
-\usepackage{amsmath} \usepackage{booktabs} \usepackage{caption}
+\usepackage{amsmath} \usepackage{booktabs}
 
-\usepackage{cite} \usepackage[numbers,sort&compress]{natbib}
-\captionsetup[table]{position=top,labelfont={sc},textfont={sl}}
-
-\renewcommand{\thetable}{\Roman {table}}
+\usepackage{cite} \usepackage[square,sort,comma,numbers]{natbib}
 
 \title{Simple Model Predictive Control (MPC) for Sounding Rocket Altitude Correction via Airbrakes}
 
@@ -73,7 +70,7 @@ pitch roll and yaw
 For simplicity we can omit the roll since it does not contribute to the heading of the rocket in flight.
 We can then apply the following reference frame transformation to convert the acceleration experienced
 by the rocket to the acceleration it is experiencing with reference to the earth frame using the Euclidian Matrix
-\cite{mallick_2016}
+as described in \citep{mallick_2016}.
 \vspace{5mm}
 
 \begin{equation}\label{eq:2}
@@ -112,7 +109,7 @@ The drag force is a function of the surface area and rocket relative velocity as
 
 In order to characterize this system we must determine the drag coefficient of the rocket
 during airbrake deployment. Due to the simplicity of the airbrake we can use a basic
-model for the experimentally determined drag of a flat plate\cite{nasa} which is
+model for the experimentally determined drag of a flat plate\citep{nasa} which is
 
 \begin{equation}\label{eq:4}
   C_d=1.28
@@ -200,7 +197,7 @@ Yost Labs 3 space LX Embedded IMU, Adafruit MTK3339 GPS and the MPL3115A2 altime
 These sensors were chosen to help minimize the amount of self developed fusion and
 filtering. The Yost Labs 3 space LX Embedded IMU has nine degrees of freedom and
 provides filtered, three dimensional acceleration, speed and position in a
-non-inertial frame (via proprietary, low level embedded algorithms). Using the data
+non-inertial frame (via proprietary, low level embedded algorithms)\citep{yost}. Using the data
 from this sensor module, all required feedback values for state estimation can be
 satisfied. However to make the state estimation as accurate as possible, the
 stand alone GPS and altimeter modules will be used to correct IMU drift and
@@ -226,10 +223,10 @@ the maximum altitude of the rocket given its current state and current drag forc
 we must first find the time at which the vertical velocity $v_{z}$ is zero, by solving the integration of velocity
 we can get the predicted distance to this point, and as a result the max altitude
 
-\begin{equation} \label{eq:5}
+\begin{equation}\label{eq:5}
 \end{equation}
 
-\begin{equation} \label{eq:6}
+\begin{equation}\label{eq:6}
 \end{equation}
 
 We can use this expression to determine the affect of our air brake deployment on the maximum altitude.
@@ -238,7 +235,7 @@ We can use this expression to determine the affect of our air brake deployment o
 
 Using the altitude prediction determined above in equation \ref{eq:4} The error between predicted and desired final altitudes can be computed by:
 
-\begin{equation} \label{eq:5}
+\begin{equation}\label{eq:7}
   error =  y_{z\_target} - y_{z\_max}
 \end{equation}
 
