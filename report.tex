@@ -64,8 +64,7 @@ pitch roll and yaw
 For simplicity we can omit the roll since it does not contribute to the heading of the rocket in flight.
 We can then apply the following reference frame transformation to convert the acceleration experienced
 by the rocket to the acceleration it is experiencing with reference to the earth frame using the Euclidian Matrix
-\ref(mallick_2016)
-
+\cite{mallick_2016}
 \begin{equation}  \label(eq:2)
   \begin{bmatrix}\ a_x\\\ a_y\\\ a_z\end{bmatrix}=
   \begin{bmatrix}
@@ -76,7 +75,7 @@ by the rocket to the acceleration it is experiencing with reference to the earth
   \begin{bmatrix} a'_x \\ a'_y \\ a'_z \end{bmatrix}
 \end{equation}
 
-Where $\theta_x$ is the yaw and $\theta_y$ is the pitch of the rocket and a' is the acceleration of the rocket.
+Where $$\theta_x$$ is the yaw and $$\theta_y$$ is the pitch of the rocket and a' is the acceleration of the rocket.
 from the rockets reference frame. These form the state space for our rocket system and most 3D kinetic systems
 
 \section{Airbrake Model}
@@ -99,7 +98,7 @@ The drag force is a function of the surface area and rocket relative velocity as
 
 In order to characterize this system we must determine the drag coefficient of the rocket
 during airbrake deployment.  Due to the simplicity of the Airbrake we can use a basic
-model for the experimentally determined drag of a flat plate\ref(nasa) which is
+model for the experimentally determined drag of a flat plate\cite{nasa} which is
 
 \begin{equation}
   C_d=1.28
@@ -201,7 +200,6 @@ Since the feedback values already provide measured acceleration, speed and posit
 in a non-inertial frame, they can be used directly to update the states of the system.
 However,
 
-
 \subsection{Final Altitude Prediction}
 
 Recall that equation \ref(eq:3) allows us to model the drag of the rocket given current velocity and
@@ -226,7 +224,7 @@ We can use this expression to determine the affect of our air brake deployment o
 
 \subsection{Final Altitude Error Calculation}
 
-Using the altitude prediction determined above in equation \ref(eq:4) we can compute an error function given by
+Using the altitude prediction determined above in equation \ref{eq:4} we can compute an error function given by
 
 \begin{equation} \label{eq:4}
   error =  target - y_{z max}
@@ -249,6 +247,6 @@ The authors would like to thank the University of Ottawa for continued support o
 rocketry team. Additionally, specific thankfulness is issued to professor Habash and
 the teaching assistants of the ELG 4157 course.
 
-\bibliographystyle{unsrt}
+\bibliographystyle{ieeetran}
 \bibliography{references}
 \end{document}
