@@ -35,7 +35,7 @@ control systems based on observed sensor feedback would not be able to meet the
 demands of rocket flight since the latency between plant actuation affecting the
 the physical world and detecting that change through sensor observations is too
 slow for such dynamic flight environments. Model Predictive Control (MPC) solves
-these problems by introducing a real time simulation that predicts trajectory.
+these problems by introducing a real time simulation that predicts trajectory \citep{7330732}.
 This process involves maintaining a kinetic model of rocket flight and a
 dynamics model of the control surfaces we are using for altitude control.
 For the case presented, it is a drag model for a airbrake system.
@@ -70,7 +70,7 @@ pitch roll and yaw
 For simplicity we can omit the roll since it does not contribute to the heading of the rocket in flight.
 We can then apply the following reference frame transformation to convert the acceleration experienced
 by the rocket to the acceleration it is experiencing with reference to the earth frame using the Euclidian Matrix
-as described in \citep{mallick_2016}.
+as described in \citep{mallick_2016} and \citep{whitmore}.
 \vspace{5mm}
 
 \begin{equation}\label{eq:2}
@@ -134,7 +134,7 @@ and implemented.
 
 The major concept of model predictive control is to maintain a real time
 simulation; This simulation's role is to produce a prediction of future system
-states using feedback from sensors and the system's current states. For the case
+states using feedback from sensors and the system's current states \citep{845037}. For the case
 of achieving a particular target altitude by deploying airbrakes, the MPC will
 produce a predicted final altitude
 every control loop. Using this predicted final altitude, the error between the
@@ -208,9 +208,57 @@ perform self-checking.
 The state estimation block uses the feedback values from sensors (after filtering and fusion)
 and the previous states of the system to calculate the current state of the system.
 Since the feedback values already provide measured acceleration, speed and position
-in a non-inertial frame, they can be used directly to update the states of the system.
+in a non-inertial frame, they can be used directly to update the states of the system. However
+to improve the accuracy of the state estimation, it is useful to estimate the states by numerically
+integrating the acceleration (in a non-inertial frame) over time to estimate velocity and position.
+
+\begin{equation}\label{eq:accel_integration}
+  v_{current} = a_{previous}\Delta t + v_{previous}
+\end{equation}
+
+\begin{equation}\label{eq:velocity_integration}
+  p_{current} = \frac{1}{2}a_{previous}\Delta t^2 + v_{previous}\Delta t + p_{previous}
+\end{equation}
+
+The computed values from \ref{eq:accel_integration} and \ref{eq:velocity_integration} in all three spatial dimensions can
+be compared to values from sensors and corrected for to achieve a more robust solution for
+maintaining state estimates for the duration of the flight. It should also be noted that
+\ref{eq:accel_integration} and \ref{eq:velocity_integration} are derived using the
+simplest means of numerical integration and other means exist to decrease the quantization
+error as a result of numerical operations.
 
 \subsection{Final Altitude Prediction}
+
+The final altitude of the rocket flight can be predicted by applying the current state estimates
+into the kinematic equations of motion. First the predicted remaining time is computed, and then
+the final altitude is calculated as shown here.
+
+\begin{equation}\label{eq:rem_time}
+  t_{rem} = \frac{v_{z\_current}}{a_{z\_current}}
+\end{equation}
+
+\begin{equation}\label{eq:alt_predict}
+  p_{z_predicted} = \frac{1}{2}a_{z\_current}t_{rem}^2 + v_{z\_current}t_{rem} + p_{z_current}
+\end{equation}
+
+Equations \ref{rem_time} and \ref{alt_predict} are only computed for the veritcal direction (subbed 'z'),
+since the goal of the control system is to achieve a specific final altitude for
+the sounding rocket.
+
+\subsection{Final Altitude Error Calculation}
+
+Using the altitude prediction determined above in equation \ref{eq:4} The error between predicted and desired final altitudes can be computed by:
+
+\begin{equation}\label{eq:7}
+  error = y_{z\_predicted} - y_{z\_target}
+\end{equation}
+
+
+\subsection{Mapping from Error to Control Signal}
+
+From the error computed above, the control signal to the actuator of the airbrakes can be determined
+to attempt to compensate. This is done by running the error and current states through the
+drag model of the airbrakes.
 
 Recall that equation \ref{eq:3} allows us to model the drag of the rocket given current velocity and
 airbrake area. Notice that this is a controllable value based on the airbrake actuation area.  The second
@@ -221,26 +269,18 @@ back to that of the rocket (ie. v')
 From here we can compute the drag force and apply a ballistic model of rocketry flight that tells us
 the maximum altitude of the rocket given its current state and current drag forces. To derive this
 we must first find the time at which the vertical velocity $v_{z}$ is zero, by solving the integration of velocity
-we can get the predicted distance to this point, and as a result the max altitude
+we can get the predicted distance to this point, and as a result the max altitude as shown in the equations here:
 
-\begin{equation}\label{eq:5}
+\begin{equation} \label{eq:drag_model_airbrakes}
+  y_{z to max} = \frac{m_{rocket}v'_z}{2F_{drag}(v'_z, A)}*ln(\frac{m_{rocket}g+F_{drag}(v'_z, A)v_z^2}{m_{rocket}g})
 \end{equation}
 
-\begin{equation}\label{eq:6}
+\begin{equation} \label{eq:final_alt_dynamics}
+  y_{z max} = y_z + y_{z\_to\_max}
 \end{equation}
 
-We can use this expression to determine the affect of our air brake deployment on the maximum altitude.
-
-\subsection{Final Altitude Error Calculation}
-
-Using the altitude prediction determined above in equation \ref{eq:4} The error between predicted and desired final altitudes can be computed by:
-
-\begin{equation}\label{eq:7}
-  error =  y_{z\_target} - y_{z\_max}
-\end{equation}
-
-
-\subsection{Mapping from Error to Control Signal}
+Through some heuristic and iterative process, this max altitude can be corrected
+via some control signal to the actuator for the airbrakes.
 
 \section{Conclusion}
 
